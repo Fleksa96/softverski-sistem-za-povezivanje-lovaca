@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="galerijaSlika.css"></h:outputStylesheet>
+    </h:head>
+    <h:body>
+        <h:form class="naslov">
+            <h:commandLink action="#{galerija.povratakNaPocetnu()}">Povratak na pocetnu stranicu</h:commandLink>
+        </h:form>
+        <h:form>
+            <p:outputPanel id="slike_lovac" class="panel" rendered="#{!galerija.tip_korisnika}">
+                <p:galleria value="#{galerija.slike}" var="slika"  showCaption="true" rendered="#{not empty galerija.slike}" >
+                        <oou:graphicImage class="img" value="#{slika}" dataURI="true" title="Slika"/>
+                </p:galleria>
+                <p:fileUpload id="file_upload1" label="Izaberi" uploadLabel="Otpremi" cancelLabel="Otkazi" listener="#{galerija.handleFileUpload}" oncomplete="location.reload(true)" multiple="true" sizeLimit="16000000" fileLimit="10" update="slike_lovac"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+            </p:outputPanel>
+            <p:outputPanel id="slike_drustvo" class="panel" rendered="#{galerija.tip_korisnika}">
+                <p:galleria value="#{galerija.slike}" var="slika"  showCaption="true" rendered="#{not empty galerija.slike}" >
+                        <oou:graphicImage class="img" value="#{slika}" dataURI="true" title="Slika"/>
+                </p:galleria>
+                <p:fileUpload id="file_upload2"  listener="#{galerija.handleFileUpload}" oncomplete="location.reload(true)" multiple="true" sizeLimit="16000000" fileLimit="10" update="slike_drustvo"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+            </p:outputPanel>
+        </h:form>
+    </h:body>
+</html>

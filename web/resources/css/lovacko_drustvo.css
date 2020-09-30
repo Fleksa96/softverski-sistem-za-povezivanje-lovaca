@@ -1,0 +1,208 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 16, 2020, 10:56:13 AM
+    Author     : Aleksaa
+*/
+.body{
+    background-color: lightgrey; 
+}
+
+
+.menubar {
+    margin: auto;
+    background-color: #cccccc;
+    border: 2px solid darkgrey !important; /* Green */
+    margin-bottom: 10px;
+}
+
+
+
+
+.ui-menuitem .ui-state-hover {
+    background-color: transparent !important;
+    border-color: white !important;
+    
+}
+
+.button-menu {
+    background-color: transparent !important;
+    border: 2px solid darkgrey !important; 
+    outline-color: darkgrey;
+    
+}
+
+.button-menu-options {
+    background-color: transparent !important;
+    border: 2px solid darkgrey !important; 
+    outline-color: darkgrey;
+    
+}
+
+.ui-menubar-options{
+    
+    padding: .4em .3em !important;
+    font-weight: 400;
+}
+
+.ui-menubar-options:hover{
+    background: transparent !important;
+    border: solid 1px white !important;
+}
+
+.ui-datascroller .ui-datascroller-header{
+    padding: 4px 4px !important;
+    padding-bottom: 10px !important;
+}
+
+.button-vesti{
+    font-size: 17px !important;
+    float: right;
+    
+    border: 2px solid darkgrey !important; 
+    outline-color: darkgrey;
+    margin-bottom: 4px;
+}
+
+.button-vesti .ui-button-text {
+    padding: 1px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.button-vesti:hover {
+    background: transparent;
+    border: solid 1px white !important;
+}
+
+
+.scroller {
+    width: calc(100% * 0.62);
+    margin-right: 2px;
+    float: right;
+    
+}
+
+.podaci {
+    width: calc(100% * 0.35);
+    margin-left: 2px;
+    float: left;
+    
+}
+
+.panel-podaci{
+    background: none;
+    border: none;
+}
+
+
+
+.panel-input{
+    
+    box-shadow: none !important;
+    width: 62%;
+    border: none !important;
+    border-bottom: 1px solid black !important;
+    background: transparent !important;
+    font-size: 16px !important;
+    border-radius: 0px;
+    padding: 0px !important;
+    text-align: center;
+    float: right;
+}
+
+.panel-input:disabled { 
+    color: #000000; 
+    font-weight: bold !important;
+}
+
+.checkbox {
+    padding-left: 3%;
+    float: right;
+}
+
+.ui-panel .ui-panel-titlebar-icon {
+    border: none;
+    box-shadow: none;
+    align-content: center;
+    background: transparent;
+    vertical-align: middle;
+    margin-top: 0 !important;
+}
+
+.ui-panel .ui-panel-titlebar-icon .ui-state-hover{
+    color: #39dc79;
+}
+
+.ui-panel-titlebar{
+    background: none;
+    border: none;
+    border-bottom: 1px solid #4f4f4f;
+    border-radius: 0px;
+}
+
+
+.button-izmeni span {
+    padding: 2px !important;
+}
+
+.ui-button.ui-state-hover {
+    background-color: transparent !important;
+    border-color: white !important;
+    
+}
+
+
+.objava_label{
+    display: block;
+    font-weight: bold !important;
+    text-align: center;
+}
+
+.objava_input {
+    
+    box-shadow: none !important;
+    width: 50%;
+    border: none !important;
+    border-bottom: 1px solid black !important;
+    background: transparent !important;
+    font-size: 16px !important;
+    border-radius: 0px;
+    padding: 0px !important;
+    text-align: center;
+    display: block !important;
+    margin: 0 auto !important;;
+}
+
+.objava_textarea {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 80%;
+}
+
+.objava_vidljivost {
+    display: block !important;
+    margin: 0 auto !important;
+    text-align: center;
+}
+
+
+.ui-galleria {
+    width: 100% !important;
+    object-fit: contain !important;
+}
+
+.ui-galleria-panel {
+    width: 100% !important;
+    object-fit: contain !important;
+}
+
+.ui-galleria-panel-wrapper {
+    width: 100% !important;
+    object-fit: contain !important;
+}
+
+.img {max-width:100%;}

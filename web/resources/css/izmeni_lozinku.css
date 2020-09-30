@@ -1,0 +1,80 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 15, 2020, 3:24:12 PM
+    Author     : Aleksaa
+*/
+
+.body {
+    margin: 0;
+    padding: 0;
+    background-image: url("#{resource['images/homepage.jpg']}");
+    background-size: cover;
+    background-repeat: no-repeat; 
+    background-attachment:fixed;
+    background-position: center;
+}
+
+
+.confirmation-box{
+    margin:auto;
+    margin-top: 15px;
+    max-height: calc(100% - 10px);
+    max-width: 400px;
+    background: rgba(0, 0, 0, 0.5) !important;
+    color: #fff;
+    top: calc(100% / 2);
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    text-align: center;
+    padding: 70px 30px;
+    
+    
+    
+}
+
+.button-submit {
+    background-color: transparent !important;
+    color: white !important;
+    border: 2px solid lightgray !important; 
+    outline-color: darkgrey;
+    margin: auto;
+}
+
+.label{
+    margin: 0;
+    padding: 0;
+    font-weight: bold !important;
+    color: white;
+}
+
+.panel-input{
+    
+    box-shadow: none !important;
+    width: 100%;
+    margin-bottom: calc(100% / 40) !important;
+    border: none !important;
+    border-bottom: 1px solid #fff !important;
+    background: transparent !important;
+    outline: none !important;
+    height: 40px;
+    color: #fff !important;
+    font-size: 16px !important;
+    border-radius: 0px;
+}
+
+.naslov a{
+    text-decoration: underline;
+    font-size: 20px;
+    float: left;
+}
+.naslov a:hover
+{
+    color: #39dc79;
+}
+

@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="login.css"></h:outputStylesheet>
+    </h:head>
+    <h:body class="body">
+        <h:form>
+            <p:menubar class="menubar">
+                <p:menuitem >
+                    <p:commandButton value="Prijava" class="button-menu" action="#{homepage.login()}" update="form1 form2">                       
+                    </p:commandButton>
+                </p:menuitem>
+                <p:menuitem >
+                    <p:commandButton value="Registracija" class="button-menu" action="#{homepage.registracija()}" update="form1 form2">                       
+                    </p:commandButton>
+                </p:menuitem>
+
+                <f:facet name="options">
+                    
+                    <p:commandButton value="Gost" action="gost?faces-redirect=true" class="button-menu-options" />
+                </f:facet>
+            </p:menubar>
+        </h:form>
+
+        <h:form id="form1">
+            <p:panel class="login-box" rendered="#{homepage.login}">
+                <br/><br/>
+                <h:outputLabel value="Prijava" class="header"></h:outputLabel>
+                <br/><br/>
+                <h:graphicImage value="/resources/images/hunter.jpg" class="avatar"></h:graphicImage>
+
+                <h:outputLabel value="Korisnicko ime:" class="label"></h:outputLabel>
+                <p:inputText id="login_korime" value="#{login.korime}" class="panel-input" required="true" requiredMessage="Unesite korisnicko ime">
+                    <f:ajax event="keyup" render="poruka_login1" />
+                    <p:message id="poruka_login1" for="login_korime"></p:message>
+                </p:inputText>
+                <h:outputLabel value="Lozinka:" class="label"></h:outputLabel>
+                <p:password id="login_lozinka" value="#{login.lozinka}" class="panel-input" required="true" requiredMessage="Unesite lozinku">
+                    <f:ajax event="keyup" render="poruka_login2" />
+                    <p:message id="poruka_login2" for="login_lozinka"></p:message>
+                </p:password>
+                <br/>
+
+                <h:link outcome="zaboravljena_lozinka?faces-redirect=true">Zaboravili ste lozinku?</h:link>
+                <br/><br/>
+                <p:commandButton value="Potvrdi" action="#{login.login()}" update="form1" class="button-login"/>
+            </p:panel>
+        </h:form>
+
+        <h:form id="form2">
+            <p:wizard class="registracija-box" rendered="#{homepage.registracija}" nextLabel="Dalje" backLabel="Nazad">
+                <p:tab title="Podaci">
+                    <p:panel header="Podaci o korisniku" class="registracija-panel">
+                        <p:panelGrid>
+                            <p:row>
+                                <p:outputLabel value="Ime:" class="label"></p:outputLabel>
+                                <p:inputText  id="ime" class="panel-input" value="#{registracija.ime}"  required="true"  validatorMessage="Ime se sastoji samo od slova" requiredMessage="Morate uneti ime">
+                                    <f:ajax event="keyup" render="poruka1" />
+                                    <f:validateRegex pattern="([a-zA-Z]+)" />
+                                    <p:message id="poruka1" for="ime"></p:message>
+                                </p:inputText>
+                            </p:row>
+                            <p:row>
+                                <p:outputLabel value="Prezime:" class="label" ></p:outputLabel>
+                                <p:inputText  id="prezime" class="panel-input" value="#{registracija.prezime}"  required="true" validatorMessage="Prezime se sastoji samo od slova" requiredMessage="Morate uneti prezime">
+                                    <f:ajax event="keyup" render="poruka2" />
+                                    <f:validateRegex pattern="([a-zA-Z]+)" />
+                                    <p:message id="poruka2" for="prezime"></p:message>
+                                </p:inputText>
+                            </p:row>
+                            <p:row>
+                                <p:outputLabel value="Srednje ime:" class="label" ></p:outputLabel>
+                                <p:inputText  id="srednje_ime" class="panel-input" value="#{registracija.srednjeIme}"  required="true" validatorMessage="Srednje ime se sastoji samo od slova" requiredMessage="Morate uneti srednje ime">
+                                    <f:ajax event="keyup" render="poruka3" />
+                                    <f:validateRegex pattern="([a-zA-Z]+)" />
+                                    <p:message id="poruka3" for="srednje_ime"></p:message>
+                                </p:inputText>
+                            </p:row>
+
+
+                            <p:row>
+                                <p:outputLabel value="Datum rodjenja:" class="label" />
+                                <p:calendar value="#{registracija.datumRodjenja}" pattern="dd/MM/yyyy" required="true" yearRange="-100:-20" navigator="true"  />
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+
+                </p:tab>
+
+                <p:tab title="Adresa">
+                    <p:panel header="Adresa korisnika" class="registracija-panel">
+                        <p:panelGrid>
+                            <p:row>
+                                <p:outputLabel value="Mesto stanovanja:" class="label"></p:outputLabel>
+                                <p:inputText  id="mesto" class="panel-input" value="#{registracija.mesto}" required="true" requiredMessage="Unesite mesto stanovanja">
+                                    <f:ajax event="keyup" render="poruka4" />
+                                    <f:validateRegex pattern="([a-zA-Z]+)" />
+                                    <p:message id="poruka4" for="mesto"></p:message>
+                                </p:inputText>
+                            </p:row>
+                            <p:row>
+                                <p:outputLabel value="Drzava:" class="label" ></p:outputLabel>
+                                <p:inputText  id="drzava" class="panel-input" value="#{registracija.drzava}" required="true" requiredMessage="Unesite drzavu">
+                                    <f:ajax event="keyup" render="poruka5" />
+                                    <f:validateRegex pattern="([a-zA-Z]+)" />
+                                    <p:message id="poruka5" for="drzava"></p:message>
+                                </p:inputText>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+
+                </p:tab>
+
+                <p:tab title="Udruzenje">
+                    <p:panel header="Podaci o lovackom drustvu" class="registracija-panel">
+                        <oou:validateAllOrNone id="allOrNone" components="lovacko_drustvo br_clanske_karte" message="Morate uneti oba polja"/>
+                        <p:panelGrid>
+                            <p:row>
+                                <p:outputLabel value="Lovacko drustvo:" class="label"></p:outputLabel>
+                                <p:inputText  id="lovacko_drustvo" class="panel-input" value="#{registracija.imeLovackogDrustva}">
+
+                                </p:inputText>
+                            </p:row>
+                            <p:row>
+                                <p:outputLabel value="Broj clanske karte" class="label" ></p:outputLabel>
+                                <p:inputText  id="br_clanske_karte" class="panel-input" value="#{registracija.brojClanskeKarte}">
+                                </p:inputText>
+                            </p:row>
+                            <p:message for="allOrNone" />
+                            <p:row>
+                                <p:outputLabel id="status" value="Status lovca:" class="label" />
+                                <br/>
+                                <p:selectOneMenu value="#{registracija.status}" class="select_menu">
+                                    <f:selectItem itemLabel="Neaktivan" itemValue="Neaktivan" />
+                                    <f:selectItem itemLabel="Aktivan" itemValue="Aktivan" />
+                                </p:selectOneMenu>
+                            </p:row>
+                        </p:panelGrid>
+
+
+                    </p:panel>
+
+                </p:tab>
+
+                <p:tab title="Kontakt">
+                    <p:panel header="Kontakt podaci" class="registracija-panel">
+                        <p:panelGrid>
+                            <p:row>
+                                <p:outputLabel value="Email:" class="label"></p:outputLabel>
+                                <p:inputText  id="email" class="panel-input" value="#{registracija.email}" required="true" requiredMessage="Morate uneti email" validatorMessage="Email je u obliku abcdef@gmail.com(najmanje 6 slova)">
+                                    <f:ajax event="keyup" render="poruka6" />
+                                    <f:validateRegex pattern="([a-z0-9](\.?[a-z0-9]){5,}@gmail\.com)" />
+                                    
+                                    <p:message id="poruka6" for="email"></p:message>
+                                </p:inputText>
+                            </p:row>
+                            <p:row>
+                                <p:outputLabel value="Potvrdite email:" class="label"></p:outputLabel>
+                                <p:inputText  id="potvrda_email" class="panel-input" value="#{registracija.potvrda_email}" required="true" requiredMessage="Morate potvrditi email">
+                                    
+                                </p:inputText>
+                            </p:row>
+                            <p:row>
+                                <p:outputLabel value="Mobilni telefon:" class="label"></p:outputLabel>
+                                <p:inputText  id="mobilni" class="panel-input" value="#{registracija.brMobilnog}" required="true" requiredMessage="Morate uneti mobilni telefon" >
+                                    <f:ajax event="keyup" render="poruka7" />
+                                    <f:validateRegex pattern="(06[0-9](\d){7})" />
+                                    
+                                    <p:message id="poruka7" for="mobilni"></p:message>
+                                </p:inputText>
+                            </p:row>
+                            <p:row>
+                                <p:commandButton value="Potvrdi" action="#{registracija.potvrdi()}" />
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+
+                </p:tab>
+            </p:wizard>
+
+
+        </h:form>
+
+    </h:body>
+</html>
+

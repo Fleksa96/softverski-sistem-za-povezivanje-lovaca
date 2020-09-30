@@ -1,0 +1,328 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="lovac.css"></h:outputStylesheet>
+    </h:head>
+    <h:body class="body" >
+        <h:form>
+            <p:menubar class="menubar">
+                <p:menuitem >
+                    <p:commandButton value="Pocetna Strana" class="button-menu" onclick="location.reload(true);" />
+                </p:menuitem>
+                <p:menuitem >
+                    <p:inputText value="#{lovac.kljucnaRec}" placeholder="Search..."/>
+                </p:menuitem>
+                <p:menuitem >
+                    <p:commandButton value="Pretrazi" class="button-menu" action="#{lovac.pretraziKorisnike()}" update="novosti" >                       
+                    </p:commandButton>
+                </p:menuitem>
+                <f:facet name="options">
+
+                    <p:commandButton value="Odjava" action="index?faces-redirect=true" class="button-menu-options" />
+                </f:facet>
+            </p:menubar>
+        </h:form>
+        <h:form id="podaci" class="podaci">
+            <p:panel id="panel_podaci" class="panel-podaci">
+                <p:message id="poruka1" for="input_ime"></p:message>
+                <p:outputLabel id="ime" value="Ime: "  />
+
+                <p:selectBooleanCheckbox value="#{lovac.prikaziIme}" disabled="true" class="checkbox"/>
+                <p:inputText  id="input_ime" class="panel-input" value="#{lovac.ime}" disabled="#{lovac.izmeni}" required="true"  validatorMessage="Ime se sastoji samo od slova" requiredMessage="Morate uneti ime">
+                    <f:ajax event="keyup" render="poruka1"/>
+                    <f:validateRegex pattern="([a-zA-Z]+)" />
+                </p:inputText>
+                
+                <br/><br/>
+                <p:message id="poruka2" for="prezime"></p:message>
+                <p:outputLabel id="prez"  value="Prezime: " />
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziPrezime}" disabled="true" class="checkbox"/>
+                <p:inputText  id="prezime" class="panel-input" value="#{lovac.prezime}" disabled="#{lovac.izmeni}" required="true" validatorMessage="Prezime se sastoji samo od slova" requiredMessage="Morate uneti prezime">
+                    <f:ajax event="keyup" render="poruka2" />
+                    <f:validateRegex pattern="([a-zA-Z]+)" />
+                </p:inputText>
+                <br/><br/>
+                <p:message id="poruka4" for="mesto"></p:message>
+                <p:outputLabel value="Mesto: " />
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziMesto}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:inputText  id="mesto" class="panel-input" value="#{lovac.mesto}" disabled="#{lovac.izmeni}" required="true" requiredMessage="Unesite mesto stanovanja">
+                    <f:ajax event="keyup" render="poruka4" />
+                    <f:validateRegex pattern="([a-zA-Z]+)" />
+
+                </p:inputText>
+                <br/><br/>
+                <p:message id="poruka5" for="drzava"></p:message>
+                <p:outputLabel value="Drzava: " />
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziDrzava}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:inputText  id="drzava" class="panel-input" value="#{lovac.drzava}" disabled="#{lovac.izmeni}" required="true" requiredMessage="Unesite drzavu">
+                    <f:ajax event="keyup" render="poruka5" />
+                    <f:validateRegex pattern="([a-zA-Z]+)" />
+
+                </p:inputText>
+                <br/><br/>
+                <p:message id="poruka7" for="mobilni"></p:message>
+                <p:outputLabel value="Telefon: " />
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziTelefon}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:inputText  id="mobilni" class="panel-input" value="#{lovac.mobilni}" disabled="#{lovac.izmeni}" required="true" requiredMessage="Morate uneti mobilni telefon" validatorMessage="Mobilni telefon se sastoji od 7 cifara">
+                    <f:ajax event="keyup" render="poruka7" />
+                    <f:validateRegex pattern="(06[0-9](\d){7})" />
+
+
+                </p:inputText>
+                <br/><br/>
+                <p:message id="poruka6" for="email"></p:message>
+                <p:outputLabel id="email_label" value="Email: "  />
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziEmail}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:inputText  id="email" class="panel-input" value="#{lovac.email}" disabled="#{lovac.izmeni}" required="true" requiredMessage="Morate uneti email" validatorMessage="Email je u obliku abcdef@gmail.com(najmanje 6 slova)">
+                    <f:ajax event="keyup" render="poruka6" />
+                    <f:validateRegex pattern="([a-z0-9](\.?[a-z0-9]){5,}@gmail\.com)" />
+
+
+                </p:inputText>
+                <br/><br/>
+                <p:outputLabel value="Datum rodjenja: " />
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziDatumRodjenja}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:inputText rendered="#{lovac.izmeni}"  disabled="#{lovac.izmeni}"  value="#{lovac.prikaziDatum()}" class="panel-input" >
+                </p:inputText>
+                <p:calendar rendered="#{!lovac.izmeni}" value="#{lovac.noviDatum}" placeholder="#{lovac.prikaziDatum()}" pattern="dd/MM/yyyy" yearRange="c-100:c" navigator="true"  />
+                <br/><br/>
+                <p:outputLabel id="status" value="Status lovca:" />
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziStatus}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:inputText rendered="#{lovac.izmeni}"  disabled="#{lovac.izmeni}"  value="#{lovac.status}" class="panel-input" ></p:inputText>
+                <p:selectOneMenu value="#{lovac.status}" rendered="#{lovac.promene}" >
+                    <f:selectItem itemLabel="Neaktivan" itemValue="Neaktivan" />
+                    <f:selectItem itemLabel="Aktivan" itemValue="Aktivan" />
+                </p:selectOneMenu>
+                <br/><br/>
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziOL}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:commandButton value="Omiljena lovista >" id="dynaButton" rendered="#{lovac.izmeni}" />
+                <p:menu rendered="#{lovac.izmeni}" overlay="true" trigger="dynaButton" model="#{lovac.ol_model}" my="left top" at="right top">
+                </p:menu>
+                <p:outputLabel id="lovista" rendered="#{lovac.promene}" value="Omiljena lovista:"  />
+                <p:selectCheckboxMenu id="menu" value="#{lovac.omiljena_lovista}" rendered="#{lovac.promene}"  label="Lovista"
+                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                    <f:selectItems value="#{lovac.lovista}" />
+                    <p:ajax event="change" listener="#{lovac.postaviIzmenaFlagLovista()}" />
+                </p:selectCheckboxMenu>
+                <br/><br/>
+                
+                <p:selectBooleanCheckbox value="#{lovac.prikaziOZ}" disabled="#{lovac.izmeni}" class="checkbox"/>
+                <p:commandButton value="Omiljene zivotinje >" id="dynaButton2" rendered="#{lovac.izmeni}" />
+                <p:menu rendered="#{lovac.izmeni}" overlay="true" trigger="dynaButton2" model="#{lovac.oz_model}" my="left top" at="right top">
+                </p:menu>
+                <p:outputLabel id="zivotinje" rendered="#{lovac.promene}" value="Omiljene zivotinje:"  />
+                <p:selectCheckboxMenu id="menu2" value="#{lovac.omiljene_zivotinje}" rendered="#{lovac.promene}"  label="zivotinje"
+                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                    <f:selectItems value="#{lovac.zivotinje}" />
+                    <p:ajax event="change" listener="#{lovac.postaviIzmenaFlagZivotinje()}" />
+                </p:selectCheckboxMenu>
+                <br/><br/>
+                <p:commandButton value="Izmeni" rendered="#{lovac.izmeni}" action="#{lovac.izmeniPodatke()}" class="button-izmeni" update=" podaci"/>
+                <p:commandButton value="Galerija" rendered="#{lovac.izmeni}" action="#{lovac.pogledajGaleriju()}" style="float: right;"/>
+                <p:commandButton value="Izmeni Lozinku" rendered="#{lovac.promene}" action="izmeni_lozinku?faces-redirect=true"  style="float: left;"/>
+                <p:commandButton value="Sacuvaj" rendered="#{lovac.promene}" action="#{lovac.sacuvajPodatke()}"  style="float: right;" update=" podaci"/>
+                <p:commandButton value="Ponisti" rendered="#{lovac.promene}" action="#{lovac.ponistiIzmenu()}"  style="float: right;" update=" podaci"/>
+            </p:panel>
+
+        </h:form>
+
+        <h:form id="novosti" class="scroller"> 
+            
+            <p:dataScroller id="vesti" value="#{lovac.vesti}" var="vest" chunkSize="10" rendered="#{!lovac.objavi and !lovac.pretraga}">
+                <f:facet name="header">
+                    <p:commandButton value="Objavi" action="#{lovac.objaviVest()}" class="button-vesti" update="novosti"/>
+                    <p:outputLabel value="Vesti" style="padding-right: 20%; "/>
+                    <p:outputPanel style="display: inline-block; float: left;">
+                    <p:selectOneMenu value="#{lovac.kategorija}"  >
+                        <f:selectItem itemLabel="Sve vesti" itemValue="" />
+                        <f:selectItem itemLabel="Oznacene za brisanje" itemValue="brisanje" />
+                        <f:selectItems value="#{lovac.sve_kategorije_vesti}" />
+                        <p:ajax event="change" update="vesti"  listener="#{lovac.updateVesti()}" />
+                    </p:selectOneMenu>
+                        </p:outputPanel>
+                    <br/>
+                </f:facet>
+                
+                <p:panel id ="panel_vest" widgetVar="#{vest.id}" toggleable="true" style="display: inline-block; width: 100%;">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{vest.naziv}" />
+                        <p:outputLabel value="(Vest je arhivirana)" rendered="#{vest.arhivirana}" />
+                        <p:outputLabel value="(Vest ce biti obrisana)" rendered="#{vest.zahtev_za_brisanje}" />
+                    </f:facet>
+                    <f:facet  name="options" >
+                        <p:menu>
+                            <p:menuitem value="Obrisi" action="#{lovac.zahtevZaBrisanje(vest.id)}" rendered="#{lovac.proveriAutora(vest.id_korisnika) and !vest.zahtev_za_brisanje}" update="vesti"/>
+                            <p:menuitem value="Ponisti brisanje" action="#{lovac.ponistiBrisanje(vest.id)}" rendered="#{lovac.proveriAutora(vest.id_korisnika) and vest.zahtev_za_brisanje}" update="vesti" />
+                            <p:menuitem value="Arhiviraj" action="#{lovac.arhiviraj(vest.id)}" rendered="#{lovac.proveriAutora(vest.id_korisnika) and !vest.arhivirana}" update="vesti"/>
+                            <p:menuitem value="Prikazi" action="#{lovac.prikazi(vest.id)}" rendered="#{lovac.proveriAutora(vest.id_korisnika) and vest.arhivirana}" update="vesti"/>
+                            <p:menuitem value="Prigovor" action="#{lovac.prigovorNaBrisanje(vest.id)}" rendered="#{!lovac.proveriAutora(vest.id_korisnika) and vest.zahtev_za_brisanje}" update="vesti"/>
+                        </p:menu>
+                    </f:facet>
+                    <p:outputLabel value="*#{lovac.dohvatiKategorijuVesti(vest.kategorija)}*" style="text-decoration: underline; font-weight: bold;"/>
+                    <br /><br />
+                    <h:outputText value="#{vest.tekst}" escape="false" />
+                    <p:galleria value="#{vest.slike}" var="slika"  showCaption="true" rendered="#{not empty vest.slike}" >
+                        <oou:graphicImage class="img" value="#{slika}" dataURI="true" title="Slika"/>
+                    </p:galleria>
+                    <br/><br/>
+                    <p:outputLabel value="#{lovac.dohvatiAutora(vest.id)}" style="display: inline-block; float: left; text-align:  right;"/>
+                    <p:outputLabel value="#{vest.datum}" style="display: inline-block; float: right; text-align:  left;">
+                        <f:convertDateTime pattern="hh:mm a dd/MM/yyyy" />
+                    </p:outputLabel>
+                </p:panel>
+                <br/><br/>
+            </p:dataScroller>
+            <p:panel id="objava" rendered="#{lovac.objavi and !lovac.pretraga}" class="panel-podaci">
+                <p:outputLabel id="naslov" value="Naslov:" class="objava_label" />
+                <br/>
+                <p:inputText value="#{lovac.naslov}" class="objava_input" required="true"/>
+                <br/>
+                <p:outputPanel id="vidljivost" class="objava_vidljivost">
+                    <p:outputLabel value="Vidljivost:" />
+                    <br/>
+                    <p:selectOneMenu value="#{lovac.privatnost}" label="Privatnost" >
+                        <f:selectItem itemLabel="Svi Lovci" itemValue="1" />
+                        <f:selectItem itemLabel="Sva Lovacka drustva" itemValue="2" />
+                        <f:selectItem itemLabel="Grupa" itemValue="3"  />
+                        <f:selectItem itemLabel="Svi" itemValue="4" />
+                        <p:ajax update="vidljivost"  listener="#{lovac.updatePrivatnost()}" />
+                    </p:selectOneMenu>
+                    <p:selectCheckboxMenu id="checkbox" value="#{lovac.odabrani_korisnici}" rendered="#{lovac.grupa}"  label="Korisnici"
+                                          filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                        <f:selectItems value="#{lovac.svi_korisnici}" />
+                    </p:selectCheckboxMenu>
+                </p:outputPanel>
+                <br/>
+                <p:outputPanel class="objava_vidljivost">
+                    <p:outputLabel value="Kategorija:" />
+                    <br/>
+                    <p:selectOneMenu id="menu" value="#{lovac.kategorija}"
+                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                        <f:selectItems value="#{lovac.sve_kategorije_vesti}" />
+                    </p:selectOneMenu>
+                </p:outputPanel>
+                <br/>
+                <p:inputTextarea value="#{lovac.tekst}" placeholder="Pisite ovde..." rows="5" cols="30" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." class="objava_textarea" required="true"/>
+
+                <h:outputText id="display" style="display: block; width:100%; text-align:center;"/>
+                <br/><br/>
+                <p:outputPanel id="slike">
+                <p:outputLabel  id="label_slike" value="Slike su uspesno otpremljene!" rendered="#{lovac.gotovUpload}" />
+                <p:fileUpload id="file_upload" label="Izaberi" uploadLabel="Otpremi" cancelLabel="Otkazi" listener="#{lovac.handleFileUpload}" multiple="true" sizeLimit="16000000" fileLimit="10" update="slike" rendered="#{!lovac.gotovUpload}"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                </p:outputPanel>
+                <br/><br/>
+                <p:commandButton value="Submit" class="objava_vidljivost" action="#{lovac.submitVest()}"  oncomplete="location.reload(true);" update="novosti"/>
+            </p:panel>
+            <p:selectOneRadio id="search_decision" value="#{lovac.radioButton}" rendered="#{!lovac.objavi and lovac.pretraga}">
+                <f:selectItem itemLabel="Lovci" itemValue="Korisnici" />
+                <f:selectItem itemLabel="Lovcka Drustva" itemValue="LDrustva" />
+                <p:ajax  update="novosti" event="valueChange" />
+            </p:selectOneRadio>
+            <br/>
+            <p:dataScroller id="pretraga_korisnika" value="#{lovac.trazeni_korisnici}" var="korisnik" chunkSize="10" rendered="#{!lovac.objavi and lovac.pretraga and lovac.radioButton eq 'Korisnici'}">
+                <f:facet name="header">
+                    Lovci: 
+                </f:facet>
+                <p:panel id ="panel_vest" widgetVar="#{korisnik.id}">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{korisnik.ime} #{korisnik.srednjeIme} #{korisnik.prezime}" />
+                    </f:facet>
+
+                    <p:outputLabel value="Mesto: " />
+                    <p:outputLabel class="panel-input" value="#{korisnik.mesto}" rendered="#{korisnik.prikaziMesto}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziMesto}"/>
+                    <br/>
+
+                    <p:outputLabel value="Drzava: " />
+                    <p:outputLabel class="panel-input" value="#{korisnik.drzava}" rendered="#{korisnik.prikaziDrzava}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziDrzava}"/>
+                    <br/>
+
+                    <p:outputLabel value="Telefon: " />
+                    <p:outputLabel class="panel-input" value="#{korisnik.brMobilnog}" rendered="#{korisnik.prikaziTelefon}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziTelefon}"/>
+                    <br/>
+
+                    <p:outputLabel id="email_label" value="Email: "  />
+                    <p:outputLabel class="panel-input" value="#{korisnik.email}" rendered="#{korisnik.prikaziEmail}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziEmail}"/>
+                    <br/>
+
+                    <p:outputLabel value="Datum rodjenja: " />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziDatumRodjenja}"/>
+                    <p:outputLabel class="panel-input" value="#{korisnik.datumRodjenja}" rendered="#{korisnik.prikaziDatumRodjenja}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:outputLabel>
+                    <br/>
+
+                    <p:outputLabel id="status" value="Status lovca:" />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziStatus}"/>
+                    <p:outputLabel class="panel-input" value="Aktivan" rendered="#{korisnik.status and korisnik.prikaziStatus}" />
+                    <p:outputLabel class="panel-input" value="Neaktivan" rendered="#{!korisnik.status and korisnik.prikaziStatus}" />
+                    <br/>
+                    <p:commandButton value="Omiljene zivotinje >" id="pretraga1" disabled="#{!korisnik.prikaziOZ}" />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziOZ}" />
+                    <p:menu overlay="true" trigger="pretraga1" model="#{korisnik.oz_model}" my="left top" at="right top">
+                    </p:menu>
+                    <br/>
+                    <p:commandButton value="Omiljena lovista >" id="pretraga2" disabled="#{!korisnik.prikaziOL}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziOL}" />
+                    <p:menu overlay="true" trigger="pretraga2" model="#{korisnik.ol_model}" my="left top" at="right top">
+                    </p:menu>
+                </p:panel>
+            </p:dataScroller>
+            <p:dataScroller  value="#{lovac.trazena_drustva}" var="d" chunkSize="10" rendered="#{!lovac.objavi and lovac.pretraga and lovac.radioButton eq 'LDrustva'}">
+                <f:facet name="header">
+                    Lovacka drustva:
+                </f:facet>
+                <p:panel  widgetVar="#{d.id}">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{d.ime}" />
+                    </f:facet>
+
+                    <p:outputLabel  value="Email: "  />
+                    <p:outputLabel class="panel-input" value="#{d.email}" rendered="#{d.prikaziEmail}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!d.prikaziEmail}"/>
+                    <br/>
+
+                    <p:outputLabel value="Status lovca:" />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!d.prikaziStatus}"/>
+                    <p:outputLabel class="panel-input" value="Aktivan" rendered="#{d.status and d.prikaziStatus}" />
+                    <p:outputLabel class="panel-input" value="Neaktivan" rendered="#{!d.status and d.prikaziStatus}" />
+                    <br/>
+                    
+                    <p:outputLabel  value="Broj clanova: "  />
+                    <p:outputLabel class="panel-input" value="#{d.broj_clanova}" rendered="#{d.prikaziBrojClanova}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!d.prikaziBrojClanova}"/>
+                    <br/>
+                    
+                    <p:outputLabel  value="Iznos clanarine: "  />
+                    <p:outputLabel class="panel-input" value="#{d.iznos_clanarine}" rendered="#{d.prikaziIznosClanarine}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!d.prikaziIznosClanarine}"/>
+                    <br/>
+                    
+                    <p:commandButton value="Omiljene zivotinje >" id="pretraga11" disabled="#{!d.prikaziOZ}" />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!d.prikaziOZ}" />
+                    <p:menu overlay="true" trigger="pretraga11" model="#{d.oz_model}" my="left top" at="right top">
+                    </p:menu>
+                    <br/>
+                </p:panel>
+            </p:dataScroller>
+        </h:form>
+    </h:body>
+</html>

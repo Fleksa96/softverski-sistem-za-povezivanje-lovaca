@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="izmeni_lozinku.css"></h:outputStylesheet>
+    </h:head>
+    <h:body class="body">
+        <h:form class="naslov">
+            <h:commandLink action="lovac?faces-redirect=true">Povratak na pocetnu stranicu</h:commandLink>
+        </h:form>
+        <h:form>
+            <p:panel class="confirmation-box">
+                <br/>
+                <h:outputLabel value="Nova lozinka:" class="label"></h:outputLabel>
+                <p:password id="password" value="#{izmeni.lozinka}" class="panel-input" required="true" requiredMessage="Unesite lozinku">
+                    <f:ajax event="keyup" render="poruka5" />
+                    <p:message id="poruka5" for="password"></p:message>
+                </p:password>
+                <h:outputLabel value="Potvrda lozinke:" class="label"></h:outputLabel>
+                <p:password id="repeated_password" class="panel-input" value="#{izmeni.nova_lozinka}" />
+                <br/>
+                <br/>
+                <p:commandButton value="Potvrdi" action="#{izmeni.promeniLozinku()}" class="button-submit" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="confirmation.css"></h:outputStylesheet>
+    </h:head>
+    <h:body class="body">
+        <h:form class="naslov">
+            <h:commandLink action="#{registracija.povratakNaIndex()}">Povratak na registracionu formu</h:commandLink>
+        </h:form>
+        
+        <h:form id="form1" rendered="#{registracija.pregledPodataka}">
+            <p:panel header="Potvrda podataka" class="confirmation-box">
+                <p:panelGrid columns="2" class="grid">
+                        <p:outputLabel value="Ime:" class="label"></p:outputLabel>
+                        <p:outputLabel value="#{registracija.ime}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Prezime:" class="label" ></p:outputLabel>
+                        <p:outputLabel value="#{registracija.prezime}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Srednje ime:" class="label" ></p:outputLabel>
+                        <p:outputLabel value="#{registracija.srednjeIme}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Datum rodjenja:" class="label" />
+                        <p:outputLabel value="#{registracija.datumRodjenja}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:outputLabel>
+                        
+                        <p:outputLabel value="Mesto stanovanja:" class="label"></p:outputLabel>
+                        <p:outputLabel value="#{registracija.mesto}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Drzava:" class="label" ></p:outputLabel>
+                        <p:outputLabel value="#{registracija.drzava}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Lovacko drustvo:" class="label"></p:outputLabel>
+                        <p:outputLabel value="#{registracija.imeLovackogDrustva}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Broj clanske karte" class="label" ></p:outputLabel>
+                        <p:outputLabel value="#{registracija.brojClanskeKarte}"></p:outputLabel>
+                        
+                        <p:outputLabel id="status" value="Status lovca:" class="label" />
+                        <p:outputLabel value="#{registracija.status}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Email:" class="label"></p:outputLabel>
+                        <p:outputLabel value="#{registracija.email}"></p:outputLabel>
+                        
+                        <p:outputLabel value="Mobilni telefon:" class="label"></p:outputLabel>
+                        <p:outputLabel value="#{registracija.brMobilnog}"></p:outputLabel>
+                </p:panelGrid>
+                <h:commandLink action="#{registracija.napraviLozinku()}">
+                    Napravi lozinku
+                </h:commandLink>
+            </p:panel>
+
+        </h:form>
+        
+        <h:form id="form2" rendered="#{registracija.napraviLozinku}" >
+            <p:panel class="confirmation-box">
+                <h:graphicImage value="/resources/images/hunter.jpg" class="avatar"></h:graphicImage>
+                <br/>
+                <br/>
+                <br/>
+                <h:outputLabel value="Korisnicko ime:" class="label"></h:outputLabel>
+                <p:inputText id="korime" value="#{registracija.korime}" class="panel-input" required="true" requiredMessage="Unesite korisnicko ime" validatorMessage="Korisnicko ime se sastoji od slova i brojeva">
+                    <f:validateRegex pattern="([a-zA-Z0-9]+)" />
+                    <f:ajax event="keyup" render="poruka4" />
+                    <p:message id="poruka4" for="korime"></p:message>
+                </p:inputText>
+                <h:outputLabel value="Lozinka:" class="label"></h:outputLabel>
+                <p:password id="password" value="#{registracija.lozinka}" class="panel-input" required="true" requiredMessage="Unesite lozinku">
+                    <f:ajax event="keyup" render="poruka5" />
+                    <p:message id="poruka5" for="password"></p:message>
+                </p:password>
+                <h:outputLabel value="Potvrda lozinke:" class="label"></h:outputLabel>
+                <p:password id="repeated_password" class="panel-input" value="#{registracija.ponoviLozinku}" />
+                <br/>
+                <br/>
+                <p:commandButton value="Potvrdi" action="#{registracija.submit()}" class="button-submit" update="form1 form2"/>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

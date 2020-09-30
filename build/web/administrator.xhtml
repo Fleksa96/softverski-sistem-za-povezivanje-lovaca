@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>    <!--Ovo je malo sturo odradjeno, zurio sam da zavrsim diplomski-->
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="lovac.css"></h:outputStylesheet>
+    </h:head>
+    
+    <h:body class="body">
+        <h:form>
+            <p:menubar class="menubar">
+               
+                <f:facet name="options">
+
+                    <p:commandButton value="Logout" action="index?faces-redirect=true" class="button-menu-options" />
+                </f:facet>
+            </p:menubar>
+        </h:form>
+        
+        <br />
+        <h:form id="podaci" class="podaci">
+            <p:panel id="panel_podaci" class="panel-podaci">
+                <p:outputLabel value="Ime: "  />
+                <p:inputText  class="panel-input" value="#{administrator.ime}" disabled="true" />
+                
+                <br/><br/>
+                <p:outputLabel value="Prezime: "  />
+                <p:inputText  class="panel-input" value="#{administrator.prezime}" disabled="true" />
+                <br/><br/>
+                <p:outputLabel value="Email: "  />
+                <p:inputText  class="panel-input" value="#{administrator.email}" disabled="true" />
+            </p:panel>
+            <br /> <br />
+            
+            <p:panel class="panel-podaci">
+                <p:outputLabel value="Definisi sifrarnik kategorija vesti:" class="label" />
+                <p:inputText value="#{administrator.kategorija_vesti}" />
+                <br /> <br />
+                <p:commandButton value="Potvrdi" action="#{administrator.unesiKategoriju()}" class="button" />
+            </p:panel>
+            
+        </h:form>
+        <h:form id="novosti" class="scroller"> 
+            <p:dataScroller id="vesti" value="#{administrator.vesti}" var="vest" chunkSize="10">
+                <f:facet name="header">
+                    <p:outputLabel value="Vesti sa zahtevom za brisanje"/>
+                    <br/>
+                </f:facet>
+
+                <p:panel id ="panel_vest" widgetVar="#{vest.id}" toggleable="true" style="display: inline-block; width: 100%;">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{vest.naziv}" />
+                    </f:facet>
+                    <f:facet  name="options" >
+                        <p:menu>
+                            <p:menuitem value="Obrisi" action="#{administrator.obrisiVest(vest.id)}" rendered="#{!vest.flag_obrisi}" update="vesti"/>
+                            <p:menuitem value="Ponisti brisanje" action="#{administrator.ponistiBrisanje(vest.id)}" rendered="#{vest.flag_obrisi}" update="vesti" />
+                            
+                        </p:menu>
+                    </f:facet>
+                    <p:outputLabel value="*#{administrator.dohvatiKategorijuVesti(vest.kategorija)}*" style="text-decoration: underline; font-weight: bold;"/>
+                    <br /><br />
+                    <h:outputText value="#{vest.tekst}" escape="false" />
+                    <p:galleria value="#{vest.slike}" var="slika"  showCaption="true" rendered="#{not empty vest.slike}" >
+                        <oou:graphicImage class="img" value="#{slika}" dataURI="true" title="Slika"/>
+                    </p:galleria>
+                    <br/><br/>
+                    <p:outputLabel value="#{administrator.dohvatiAutora(vest.id)}" style="display: inline-block; float: left; text-align:  right;"/>
+                    <p:outputLabel value="#{vest.datum}" style="display: inline-block; float: right; text-align:  left;">
+                        <f:convertDateTime pattern="hh:mm a dd/MM/yyyy" />
+                    </p:outputLabel>
+                </p:panel>
+                <br/><br/>
+            </p:dataScroller>
+        </h:form>
+    </h:body>
+
+</html>
+

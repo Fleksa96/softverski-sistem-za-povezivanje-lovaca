@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="lovacko_drustvo.css"></h:outputStylesheet>
+    </h:head>
+    <h:body class="body" >
+        <h:form>
+            <p:menubar class="menubar">
+                <p:menuitem >
+                    <p:commandButton value="Pocetna Strana" class="button-menu" onclick="location.reload(true);" />
+                </p:menuitem>
+                <p:menuitem >
+                    <p:inputText value="#{drustvo.kljucnaRec}" placeholder="Search..."/>
+                </p:menuitem>
+                <p:menuitem >
+                    <p:commandButton value="Pretrazi" class="button-menu" action="#{drustvo.pretraziKorisnike()}" update="novosti" >                       
+                    </p:commandButton>
+                </p:menuitem>
+                <f:facet name="options">
+
+                    <p:commandButton value="Odjava" action="index?faces-redirect=true" class="button-menu-options" />
+                </f:facet>
+            </p:menubar>
+        </h:form>
+        <h:form id="podaci" class="podaci">
+            <p:panel id="panel_podaci" class="panel-podaci">
+                <p:message id="poruka1" for="input_ime"></p:message>
+                <p:outputLabel id="ime" value="Ime: "  />
+
+                <p:selectBooleanCheckbox value="#{drustvo.prikaziIme}" disabled="true" class="checkbox"/>
+                <p:inputText  id="input_ime" class="panel-input" value="#{drustvo.ime}" disabled="#{drustvo.izmeni}" required="true"  validatorMessage="Ime se sastoji samo od slova" requiredMessage="Morate uneti ime">
+                    <f:ajax event="keyup" render="poruka1"/>
+                    <f:validateRegex pattern="([a-z A-Z]+)" />
+                </p:inputText>
+                
+                <br/><br/>
+                <p:message id="poruka2" for="email"></p:message>
+                <p:outputLabel id="email_label" value="Email: "  />
+                
+                <p:selectBooleanCheckbox value="#{drustvo.prikaziEmail}" disabled="#{drustvo.izmeni}" class="checkbox"/>
+                <p:inputText  id="email" class="panel-input" value="#{drustvo.email}" disabled="#{drustvo.izmeni}" required="true" requiredMessage="Morate uneti email" validatorMessage="Email je u obliku abcdef@gmail.com(najmanje 6 slova)">
+                    <f:ajax event="keyup" render="poruka2" />
+                    <f:validateRegex pattern="([a-z0-9](\.?[a-z0-9]){5,}@gmail\.com)" />
+
+
+                </p:inputText>
+                
+                <br/><br/>
+                <p:outputLabel id="status" value="Status:" />
+                
+                <p:selectBooleanCheckbox value="#{drustvo.prikaziStatus}" disabled="#{drustvo.izmeni}" class="checkbox"/>
+                <p:inputText rendered="#{drustvo.izmeni}"  disabled="#{drustvo.izmeni}"  value="#{drustvo.status}" class="panel-input" ></p:inputText>
+                <p:selectOneMenu value="#{drustvo.status}" rendered="#{drustvo.promene}" >
+                    <f:selectItem itemLabel="Privatno" itemValue="Privatno" />
+                    <f:selectItem itemLabel="Drzavno" itemValue="Drzavno" />
+                </p:selectOneMenu>
+                
+                
+                <br/><br/>
+                
+                <p:outputLabel  value="Broj clanova: "  />
+
+                <p:selectBooleanCheckbox value="#{drustvo.prikaziBrojClanova}" disabled="#{drustvo.izmeni}" class="checkbox"/>
+                <p:inputText  class="panel-input" value="#{drustvo.broj_clanova}" disabled="true">
+                </p:inputText>
+                
+                <br/><br/>
+                
+                <p:message id="poruka3" for="input_clanarina"></p:message>
+                <p:outputLabel id="clanarina" value="Clanarina: "  />
+
+                <p:selectBooleanCheckbox value="#{drustvo.prikaziIznosClanarine}" disabled="#{drustvo.izmeni}" class="checkbox"/>
+                <p:inputText  id="input_clanarina" class="panel-input" value="#{drustvo.iznos_clanarine}" disabled="#{drustvo.izmeni}" required="true"  validatorMessage="Clanarina se sastoji od cifara" requiredMessage="Morate uneti clanarinu">
+                    <f:ajax event="keyup" render="poruka3"/>
+                    <f:validateRegex pattern="([1-9]+[0-9]+)" />
+                </p:inputText>
+                
+                
+                <br/><br/>
+                
+                <p:selectBooleanCheckbox value="#{drustvo.prikaziOZ}" disabled="#{drustvo.izmeni}" class="checkbox"/>
+                <p:commandButton value="Vrste zivotinje >" id="dynaButton2" rendered="#{drustvo.izmeni}" />
+                <p:menu rendered="#{drustvo.izmeni}" overlay="true" trigger="dynaButton2" model="#{drustvo.oz_model}" my="left top" at="right top">
+                </p:menu>
+                <p:outputLabel id="zivotinje" rendered="#{drustvo.promene}" value="Omiljene zivotinje:"  />
+                <p:selectCheckboxMenu id="menu2" value="#{drustvo.omiljene_zivotinje}" rendered="#{drustvo.promene}"  label="zivotinje"
+                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                    <f:selectItems value="#{drustvo.zivotinje}" />
+                    <p:ajax event="change" listener="#{drustvo.postaviIzmenaFlagZivotinje()}" />
+                </p:selectCheckboxMenu>
+                <br/><br/>
+                <p:commandButton value="Izmeni" rendered="#{drustvo.izmeni}" action="#{drustvo.izmeniPodatke()}" class="button-izmeni" update=" podaci"/>
+                <p:commandButton value="Galerija" rendered="#{drustvo.izmeni}" action="#{drustvo.pogledajGaleriju()}" style="float: right;"/>
+                <p:commandButton value="Sacuvaj" rendered="#{drustvo.promene}" action="#{drustvo.sacuvajPodatke()}"  style="float: right;" update=" podaci"/>
+                <p:commandButton value="Ponisti" rendered="#{drustvo.promene}" action="#{drustvo.ponistiIzmenu()}"  style="float: right;" update=" podaci"/>
+            </p:panel>
+
+        </h:form>
+
+        <h:form id="novosti" class="scroller"> 
+            
+            <p:dataScroller id="vesti" value="#{drustvo.vesti}" var="vest" chunkSize="10" rendered="#{!drustvo.objavi and !drustvo.pretraga}">
+                <f:facet name="header">
+                    <p:commandButton value="Objavi" action="#{drustvo.objaviVest()}" class="button-vesti" update="novosti"/>
+                   
+                    <p:outputLabel value="Vesti" style="padding-right: 20%; "/>
+                    <p:outputPanel style="display: inline-block; float: left;">
+                        <p:selectOneMenu value="#{drustvo.kategorija_vesti}"  >
+                            <f:selectItem itemLabel="Sve vesti" itemValue="" />
+                        <f:selectItem itemLabel="Oznacene za brisanje" itemValue="brisanje" />
+                        <f:selectItems value="#{drustvo.sve_kategorije_vesti}" />
+                        <p:ajax event="change" update="vesti"  listener="#{drustvo.updateVesti()}" />
+                    </p:selectOneMenu>
+                        </p:outputPanel>
+                    <br/>
+                    
+                </f:facet>
+
+                <p:panel id ="panel_vest" widgetVar="#{vest.id}" toggleable="true" style="display: inline-block; width: 100%;">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{vest.naziv}" />
+                        <p:outputLabel value="(Vest je arhivirana)" rendered="#{vest.arhivirana}" />
+                        <p:outputLabel value="(Vest ce biti obrisana)" rendered="#{vest.zahtev_za_brisanje}" />
+                    </f:facet>
+                    <f:facet  name="options" >
+                        <p:menu>
+                            <p:menuitem value="Obrisi" action="#{drustvo.zahtevZaBrisanje(vest.id)}" rendered="#{drustvo.proveriAutora(vest.id_korisnika) and !vest.zahtev_za_brisanje}" update="vesti"/>
+                            <p:menuitem value="Ponisti brisanje" action="#{drustvo.ponistiBrisanje(vest.id)}" rendered="#{drustvo.proveriAutora(vest.id_korisnika) and vest.zahtev_za_brisanje}" update="vesti" />
+                            <p:menuitem value="Arhiviraj" action="#{drustvo.arhiviraj(vest.id)}" rendered="#{drustvo.proveriAutora(vest.id_korisnika) and !vest.arhivirana}" update="vesti"/>
+                            <p:menuitem value="Prikazi" action="#{drustvo.prikazi(vest.id)}" rendered="#{drustvo.proveriAutora(vest.id_korisnika) and vest.arhivirana}" update="vesti"/>
+                            <p:menuitem value="Prigovor" action="#{drustvo.prigovorNaBrisanje(vest.id)}" rendered="#{!drustvo.proveriAutora(vest.id_korisnika) and vest.zahtev_za_brisanje}" update="vesti"/>
+                        </p:menu>
+                    </f:facet>
+                    <p:outputLabel value="*#{drustvo.dohvatiKategorijuVesti(vest.kategorija)}*" style="text-decoration: underline; font-weight: bold;"/>
+                    <br /><br />
+                    <h:outputText value="#{vest.tekst}" escape="false" />
+                    <p:galleria value="#{vest.slike}" var="slika"  showCaption="true" rendered="#{not empty vest.slike}" >
+                        <oou:graphicImage class="img" value="#{slika}" dataURI="true" title="Slika"/>
+                    </p:galleria>
+                    <br/><br/>
+                    <p:outputLabel value="#{drustvo.dohvatiAutora(vest.id)}" style="display: inline-block; float: left; text-align:  right;"/>
+                    <p:outputLabel value="#{vest.datum}" style="display: inline-block; float: right; text-align:  left;">
+                        <f:convertDateTime pattern="hh:mm a dd/MM/yyyy" />
+                    </p:outputLabel>
+                </p:panel>
+                <br/><br/>
+            </p:dataScroller>
+            <p:panel id="objava" rendered="#{drustvo.objavi and !drustvo.pretraga}" class="panel-podaci">
+                <p:outputLabel id="naslov" value="Naslov:" class="objava_label" />
+                <br/>
+                <p:inputText value="#{drustvo.naslov}" class="objava_input" required="true"/>
+                <br/>
+                <p:outputPanel id="vidljivost" class="objava_vidljivost">
+                    <p:outputLabel value="Vidljivost:" />
+                    <br/>
+                    <p:selectOneMenu value="#{drustvo.privatnost}" label="Privatnost" >
+                        <f:selectItem itemLabel="Svi Lovci" itemValue="1" />
+                        <f:selectItem itemLabel="Sva Lovacka drustva" itemValue="2" />
+                        <f:selectItem itemLabel="Grupa" itemValue="3"  />
+                        <f:selectItem itemLabel="Svi" itemValue="4" />
+                        <p:ajax update="vidljivost"  listener="#{drustvo.updatePrivatnost()}" />
+                    </p:selectOneMenu>
+                    <p:selectCheckboxMenu id="checkbox" value="#{drustvo.odabrani_korisnici}" rendered="#{drustvo.grupa}"  label="Korisnici"
+                                          filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                        <f:selectItems value="#{drustvo.svi_korisnici}" />
+                    </p:selectCheckboxMenu>
+                </p:outputPanel>
+                <br/>
+                <p:outputPanel class="objava_vidljivost">
+                    <p:outputLabel value="Kategorija:" />
+                    <br/>
+                    <p:selectOneMenu id="menu" value="#{drustvo.kategorija_vesti}"
+                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                        <f:selectItems value="#{drustvo.sve_kategorije_vesti}" />
+                    </p:selectOneMenu>
+                </p:outputPanel>
+                <br/>
+                <p:inputTextarea value="#{drustvo.tekst}" placeholder="Pisite ovde..." rows="5" cols="30" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." class="objava_textarea" required="true"/>
+
+                <h:outputText id="display" style="display: block; width:100%; text-align:center;"/>
+                <br/><br/>
+                <p:outputPanel id="slike">
+                <p:outputLabel  id="label_slike" value="Slike su uspesno otpremljene!" rendered="#{drustvo.gotovUpload}" />
+                <p:fileUpload id="file_upload" listener="#{drustvo.handleFileUpload}" multiple="true" sizeLimit="16000000" fileLimit="10" update="slike" rendered="#{!drustvo.gotovUpload}"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                </p:outputPanel>
+                <br/><br/>
+                <p:commandButton value="Submit" class="objava_vidljivost" action="#{drustvo.submitVest()}"  oncomplete="location.reload(true);" update="novosti"/>
+            </p:panel>
+            
+            <p:selectOneRadio id="search_decision" value="#{drustvo.radioButtonSearch}" rendered="#{!drustvo.objavi and drustvo.pretraga}">
+                <f:selectItem itemLabel="Korisnici" itemValue="Korisnici" />
+                <f:selectItem itemLabel="Lovcka Drustva" itemValue="Drustva" />
+                <p:ajax  update="novosti" event="valueChange" />
+            </p:selectOneRadio>
+            <br/>
+            <p:dataScroller id="pretraga_korisnika" value="#{drustvo.trazeni_korisnici}" var="korisnik" chunkSize="10" rendered="#{!drustvo.objavi and drustvo.pretraga and drustvo.radioButtonSearch eq 'Korisnici'}">
+                <f:facet name="header">
+                    Korisnici:
+                </f:facet>
+                <p:panel id ="panel_vest" widgetVar="#{korisnik.id}">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{korisnik.ime} #{korisnik.srednjeIme} #{korisnik.prezime}" />
+                    </f:facet>
+
+                    <p:outputLabel value="Mesto: " />
+                    <p:outputLabel class="panel-input" value="#{korisnik.mesto}" rendered="#{korisnik.prikaziMesto}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziMesto}"/>
+                    <br/>
+
+                    <p:outputLabel value="Drzava: " />
+                    <p:outputLabel class="panel-input" value="#{korisnik.drzava}" rendered="#{korisnik.prikaziDrzava}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziDrzava}"/>
+                    <br/>
+
+                    <p:outputLabel value="Telefon: " />
+                    <p:outputLabel class="panel-input" value="#{korisnik.brMobilnog}" rendered="#{korisnik.prikaziTelefon}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziTelefon}"/>
+                    <br/>
+
+                    <p:outputLabel id="email_label" value="Email: "  />
+                    <p:outputLabel class="panel-input" value="#{korisnik.email}" rendered="#{korisnik.prikaziEmail}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziEmail}"/>
+                    <br/>
+
+                    <p:outputLabel value="Datum rodjenja: " />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziDatumRodjenja}"/>
+                    <p:outputLabel class="panel-input" value="#{korisnik.datumRodjenja}" rendered="#{korisnik.prikaziDatumRodjenja}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:outputLabel>
+                    <br/>
+
+                    <p:outputLabel id="status" value="Status lovca:" />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziStatus}"/>
+                    <p:outputLabel class="panel-input" value="Aktivan" rendered="#{korisnik.status and korisnik.prikaziStatus}" />
+                    <p:outputLabel class="panel-input" value="Neaktivan" rendered="#{!korisnik.status and korisnik.prikaziStatus}" />
+                    <br/>
+                    <p:commandButton value="Omiljene zivotinje >" id="pretraga1" disabled="#{!korisnik.prikaziOZ}" />
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziOZ}" />
+                    <p:menu overlay="true" trigger="pretraga1" model="#{korisnik.oz_model}" my="left top" at="right top">
+                    </p:menu>
+                    <br/>
+                    <p:commandButton value="Omiljena lovista >" id="pretraga2" disabled="#{!korisnik.prikaziOL}"/>
+                    <p:outputLabel class="panel-input" value="******" rendered="#{!korisnik.prikaziOL}" />
+                    <p:menu overlay="true" trigger="pretraga2" model="#{korisnik.ol_model}" my="left top" at="right top">
+                    </p:menu>
+                </p:panel>
+            </p:dataScroller>
+            
+        </h:form>
+    </h:body>
+</html>

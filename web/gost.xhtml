@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>    <!--Ovo je malo sturo odradjeno, zurio sam da zavrsim diplomski-->
+        <title>Hunting portal</title>
+        <h:outputStylesheet library="css" name="lovac.css"></h:outputStylesheet>
+    </h:head>
+    
+    <h:body class="body">
+        <h:form class="naslov">
+            <h:commandLink action="index?faces-redirect=true">Povratak na pocetnu stranicu</h:commandLink>
+        </h:form>
+        <br />
+        <h:form id="podaci" class="podaci">
+            <p:outputLabel value="O portalu:" class="label" />
+            <p>
+                Ovaj portal je Zatvorenog tipa i namenjen je lovcima i lovackim drustvima.
+                Nastao je 01/09/2020<br />
+                Pravila koja se moraju postovati:<br />
+                1) Nema ruznih reci <br />
+                2) Nema spamovanja, maksimalno 10 objava dnevno <br />
+                3) Pozovite vase prijatelje lovce da nam se prikljuce<br />
+                
+                <br />
+                Za sva pitanja obratite se na:<br />
+                lovac.podrska@gmail.com
+                
+                
+            </p>
+            <br /><br /><br />
+            <p>
+                Administratori portala: <br />
+                <h:dataTable value="#{homepage.admins}" var="admin">
+                    <h:column>
+                        #{admin.ime} #{admin.prezime}:
+                    </h:column>
+                    <h:column>
+                        #{admin.email}
+                    </h:column>
+                </h:dataTable>
+            </p>
+            
+        </h:form>
+        <h:form id="novosti" class="scroller"> 
+            <p:dataScroller id="vesti" value="#{homepage.vesti}" var="vest" chunkSize="10">
+                <f:facet name="header">
+                    <p:outputLabel value="Vesti"/>
+                    <br/>
+                </f:facet>
+
+                <p:panel id ="panel_vest" widgetVar="#{vest.id}" toggleable="true" style="display: inline-block; width: 100%;">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{vest.naziv}" />
+                    </f:facet>
+                    <p:outputLabel value="*#{homepage.dohvatiKategorijuVesti(vest.kategorija)}*" style="text-decoration: underline; font-weight: bold;"/>
+                    <br /><br />
+                    <h:outputText value="#{vest.tekst}" escape="false" />
+                    <p:galleria value="#{vest.slike}" var="slika"  showCaption="true" rendered="#{not empty vest.slike}" >
+                        <oou:graphicImage class="img" value="#{slika}" dataURI="true" title="Slika"/>
+                    </p:galleria>
+                    <br/><br/>
+                    <p:outputLabel value="#{homepage.dohvatiAutora(vest.id)}" style="display: inline-block; float: left; text-align:  right;"/>
+                    <p:outputLabel value="#{vest.datum}" style="display: inline-block; float: right; text-align:  left;">
+                        <f:convertDateTime pattern="hh:mm a dd/MM/yyyy" />
+                    </p:outputLabel>
+                </p:panel>
+                <br/><br/>
+            </p:dataScroller>
+        </h:form>
+    </h:body>
+
+</html>
+
